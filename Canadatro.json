@@ -1,0 +1,23 @@
+{
+	"id": "Canadatro",
+	"name": "Canadatro",
+	"display_name": "Canadatro",
+	"author": [
+		"canada"
+	],
+	"description": "holy shit it's canada",
+	"prefix": "canadatro",
+	"main_file": "main.lua",
+	"priority": 0,
+	"badge_colour": "ff7676",
+	"badge_text_colour": "fff3f3",
+	"version": "1",
+	"dependencies": [
+		"Lovely (>=0.7)",
+		"Balatro (>=1.0.1o)"
+	],
+	"conflicts": [
+	"Talisman (<=2.0.2)",
+	"Cryptid (<<0.5.4)"
+	]
+}

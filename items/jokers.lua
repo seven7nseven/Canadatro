@@ -1383,6 +1383,53 @@ SMODS.Joker{
     end,
 }
 
+SMODS.Atlas{
+    key = 'evillerril',
+    path = 'evillerril.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Joker{
+    key = 'evillerril',
+    loc_txt = {
+        name = 'lirrel',
+        text = {'BYE'},
+    },
+    atlas = 'evillerril',
+    rarity = "Canadatro_fuck",
+    cost = 1,
+    pools = {["Canadaaddition"] = true},
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = false,
+    perishable_compat = false,
+
+    pos = {x=0, y= 0},
+    config = { extra = {chance = 500, money = -973542}},
+
+    loc_vars = function(self, info_queue, center)
+		return { vars = {center.ability.extra.money, G.GAME.probabilities.normal, center.ability.extra.chance }  }
+	end,
+
+    calculate = function(self, card, context)
+		if context.joker_main then
+            if pseudorandom('evillerril') < (G.GAME.probabilities.normal / card.ability.extra.chance) then
+                return {
+                    message = "just wanted to say BYE",
+                    dollars = card.ability.extra.money,
+                }
+            else
+                return {
+                    message = "GOODBYE",
+                }
+            end
+        end
+    end,
+}
+
 -- a MEAN country
 SMODS.Atlas{
     key = 'vendetta',

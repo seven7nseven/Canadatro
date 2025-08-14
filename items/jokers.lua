@@ -1592,7 +1592,7 @@ SMODS.Joker{
                             key = "a_powmultchips",
                             vars = {
                                 number_format(card.ability.extra.exponent),
-                            },
+                            }
                         }),
                         Emult_mod = lenient_bignum(card.ability.extra.exponent),
                         Echip_mod = lenient_bignum(card.ability.extra.exponent),
@@ -2225,7 +2225,7 @@ SMODS.Joker{
         text = {'{X:mult,C:white}x#1#{} mult',
                 'gain {X:mult,C:white}x#2#{} mult per {C:attention}country joker{}',
                 'summon a {C:dark_edition}negative {C:attention}finland^3{} at the end of the round',
-                '{C:inactive}(currently {X:mult,C:white}x#3#{C:inactive} mult){}'}
+                '{C:inactive}(currently {X:mult,C:white}x#3#{C:inactive} multz`){}'}
     },
     atlas = 'donut',
     rarity = 'canadatro_deity',
@@ -2710,6 +2710,8 @@ SMODS.Joker{
     end,
 }
 
+-- ps3!!!!
+
 SMODS.Atlas{
     key = 'ps3',
     path = 'ps3.png',
@@ -2765,10 +2767,10 @@ SMODS.Joker{
                     func = function()
                         self.pos.x = 1
                         G._yellowness = G._yellowness + 0.05;
-                        print('wawa')
+                        -- print('wawa')
                         G.E_MANAGER:add_event(Event({
                             trigger = "after", 
-                            delay = 5, 
+                            delay = 5,  
                             func = function() 
                                 self.pos.x = 0
                                 return true 
@@ -2789,6 +2791,67 @@ SMODS.Joker{
             }
         end
    end,
+
+    check_for_unlock = function(self, args)
+        if args.type == 'test' then --not a real type, just a joke
+            unlock_card(self)
+        end
+        unlock_card(self) --unlocks the card if it isnt unlocked
+    end,
+}
+
+-- stupid fucking lesbian
+SMODS.Atlas{
+    key = 'aurora',
+    path = 'aurora.png',
+    px = 71,
+    py = 95,
+}
+SMODS.Sound({key = "aurora", path = "aurora.ogg"})
+
+SMODS.Joker{
+    key = 'aurora',
+    loc_txt = {
+        name = 'aurora',
+        text = {'each queen played gives {X:dark_edition,C:white}^#1#{} mult and chips'}
+    },
+    atlas = 'aurora',
+    rarity = 'canadatro_deity',
+    cost = 65536,
+    pools = {["Deity"] = true},
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = false,
+
+    pos = { x = 0, y = 0},
+    soul_pos = { x = 1, y = 0 },
+    config = {extra = {exponent = 1.25}},
+
+    loc_vars = function(self, info_queue, center)
+        info_queue[#info_queue+1] = {key = 'canadatro_bothcredit', set = 'Other', vars = { "plank" }}
+        return { vars = {center.ability.extra.exponent}}
+    end,
+
+    calculate = function(self, card, context)
+        if context.cardarea == G.play and context.individual and context.other_card then
+            if context.other_card:get_id() == 12 then
+                return {
+                    message = localize({
+                        type = "variable",
+                        key = "a_powmultchips",
+                        vars = { number_format(card.ability.extra.exponent) },
+                    }),
+                    sound = "canadatro_aurora",
+                    Emult_mod = card.ability.extra.exponent,
+                    Echip_mod = card.ability.extra.exponent,
+                    card = card,
+                }
+            end
+        end
+    end,
 
     check_for_unlock = function(self, args)
         if args.type == 'test' then --not a real type, just a joke

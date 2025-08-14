@@ -2727,7 +2727,7 @@ SMODS.Joker{
     key = 'ps3',
     loc_txt = {
         name = 'fat playstation 3',
-        text = {'{X:mult,C:white} X#1#{} mult, {C:green}#2# іn #3#{} chance for the game to get more {B:1,C:white}yellow{} tinted',
+        text = {'{X:mult,C:white} X#1#{} mult, {C:green}#2# in #3#{} chance for the game to get more {B:1,C:white}yellow{} tinted',
                 '{C:inactive}those who bumpgate{}'}
     },
     atlas = 'ps3',

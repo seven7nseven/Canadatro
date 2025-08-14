@@ -2518,7 +2518,7 @@ SMODS.Joker{
     config = { extra = {steelenhc = 1.25}},
 
     loc_vars = function(self, info_queue, center)
-        info_queue[#info_queue+1] = {key = 'canadatro_bothcredit', set = 'Other', vars = { "Sinnvakr" }}
+        info_queue[#info_queue+1] = {key = 'canadatro_bothcredit', set = 'Other', vars = { "sinnvakr" }}
 		return { vars = {center.ability.extra.steelenhc}  }
 	end,
 
@@ -2613,6 +2613,63 @@ SMODS.Joker{
     end,
 }
 
+-- seven7nseven (EFFECT NOT IMPLEMENTED YET)
+SMODS.Atlas{
+    key = 'collectmypages',
+    path = 'collectmypages.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Joker{
+    key = 'collectmypages',
+    loc_txt = {
+        name = 'COLLECT MY 7 PAGES...',
+        text = {'gains {C:blue}+#1#{} chips per scored {C:dark_edition}PAGE.',
+                '{C:inactive}(currently {C:blue}+#2# {C:inactive}chips){}'}
+    },
+    atlas = 'collectmypages',
+    rarity = 2,
+    cost = 6,
+    pools = {["Canadaaddition"] = true},
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = false,
+    perishable_compat = false,
+    hidden = true,
+
+    pos = {x=0, y= 0},
+    config = { extra = {chip_mod = 10, chips = 0}},
+
+    loc_vars = function(self, info_queue, center)
+        info_queue[#info_queue+1] = {key = 'canadatro_ideacredit', set = 'Other', vars = { "kalp" }}
+		return { vars = {center.ability.extra.chip_mod, center.ability.extra.chips}  }
+	end,
+
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play then
+			if context.other_card.seal == "canadatro_pageseal" then
+                card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
+            end
+		end
+        if context.joker_main then
+            return 
+                {
+                chips = card.ability.extra.chips,
+                }
+            end
+    end,
+
+    check_for_unlock = function(self, args)
+        if args.type == 'test' then --not a real type, just a joke
+            unlock_card(self)
+        end
+        unlock_card(self) --unlocks the card if it isnt unlocked
+    end,
+}
+
 SMODS.Joker{
     key = 'placeholderjoker',
     loc_txt = {
@@ -2633,17 +2690,16 @@ SMODS.Joker{
     hidden = true,
 
     pos = {x=0, y= 0},
-    config = { extra = {steelenhc = 1.25}},
+    config = { extra = {chip_mod = 10, chips = 0}},
 
     loc_vars = function(self, info_queue, center)
         info_queue[#info_queue+1] = {key = 'canadatro_artcredit', set = 'Other', vars = { "blabla" }}
         info_queue[#info_queue+1] = {key = 'canadatro_ideacredit', set = 'Other', vars = { "blabla" }}
-		return { vars = {center.ability.extra.steelenhc}  }
+		return { vars = {center.ability.extra.chip_mod, center.ability.extra.chips}  }
 	end,
 
-    --    calculate = function(self, card, context)
-
-    --    end,
+    --calculate = function(self, card, context)
+    --end,
 
     check_for_unlock = function(self, args)
         if args.type == 'test' then --not a real type, just a joke

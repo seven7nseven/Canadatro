@@ -1559,7 +1559,7 @@ SMODS.Joker{
     atlas = 'unversale',
     rarity = 'canadatro_deity',
     cost = 185334324,
-    pools = {["Canadaaddition"] = true, ["Deity"] = true},
+    pools = {["Deity"] = true},
 
     unlocked = true,
     discovered = true,
@@ -2230,7 +2230,7 @@ SMODS.Joker{
     atlas = 'donut',
     rarity = 'canadatro_deity',
     cost = 12839812598,
-    pools = {["Canadaaddition"] = true, ["Deity"] = true},
+    pools = {["Deity"] = true},
 
     unlocked = true,
     discovered = true,
@@ -2415,7 +2415,7 @@ SMODS.Joker{
     atlas = 'roberto',
     rarity = 'canadatro_deity',
     cost = 521357129379273876,
-    pools = {["Canadaaddition"] = true, ["Deity"] = true},
+    pools = {["Deity"] = true},
 
     unlocked = true,
     discovered = true,

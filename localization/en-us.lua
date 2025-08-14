@@ -25,6 +25,7 @@ return {
         dictionary = {
             k_canadatro_booster = "the country",
             k_canadatro_booster_evil = "yrtnuoc eht",
+            k_canadatro_booster_6am = "is 6 am concidered a choice",
 
             k_canadatro_fuck = "Messed",
             k_canadatro_amrt = "amrt :3",

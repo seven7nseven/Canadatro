@@ -14,7 +14,7 @@ end
 G.C.CANADARED = HEX("ff7676")
 G.C.CANADAWHITE = HEX("fff3f3")
 G.C.CANADABLUE = HEX("00a2a2")
-G.C.CANADAGRAY = HEX("272727")
+G.C.CANADAGRAY = HEX("777777")
 G.C.mid_flash = 0
 G.C.vort_time = 7
 G.C.vort_speed = 0.25

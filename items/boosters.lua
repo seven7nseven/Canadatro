@@ -154,7 +154,7 @@ SMODS.Sound({
 	end,
 })
 
--- Booster Pack 1
+-- 6 am booster pack (CURRENTLY USES THE REGULAR CANADATRO POOL DUE TO US HAVING ONLY 2 (two) 6 AM JOKERS)
 SMODS.Booster{
     key = 'booster_6am',
     group_key = "k_canadatro_booster_6am",
@@ -194,7 +194,7 @@ SMODS.Booster{
 
     ease_background_colour = function(self)
 		ease_colour(G.C.DYN_UI.MAIN, G.C.CAN_BOOOOO)
-		ease_background_colour({ new_colour = G.C.CAN_BOOOOO, special_colour = G.C.CANADAGRAY, contrast = 1 })
+		ease_background_colour({ new_colour = G.C.CAN_BOOOOO, special_colour = G.C.CANADAGRAY, contrast = 2 })
 	end,
 
     in_pool = function() return true end

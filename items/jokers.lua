@@ -2549,6 +2549,70 @@ SMODS.Joker{
     end,
 }
 
+-- seven7nseven (EFFECT NOT IMPLEMENTED YET)
+SMODS.Atlas{
+    key = 'seven7nseven',
+    path = 'seven7n77.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Joker{
+    key = 'seven7nseven',
+    loc_txt = {
+        name = 'seven7nseven',
+        text = {'retrigger scored {C:attention}7s{} {C:green}#2#{} times',
+                '{C:attention}7s{} give {X:dark_edition,C:white}x#1#{} {C:red}mult{} + {C:blue}chips{} and {C:attention}#3#${} when scored',
+                '{C:inactive}of course a dev self insert has the best art..{}'}
+    },
+    atlas = 'seven7nseven',
+    rarity = 'canadatro_deity',
+    cost = 7777777777777777777,
+    pools = {["Deity"] = true},
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = false,
+    eternal_compat = false,
+    perishable_compat = false,
+
+    pos = {x=0, y= 0},
+    soul_pos = { x = 0, y = 1 },
+    config = {extra = {retriggers = 7, multiplier = 7, dollars = 77}},
+
+    loc_vars = function(self, info_queue, center)
+		return { vars = {center.ability.extra.multiplier, center.ability.extra.retriggers, center.ability.extra.dollars}}
+	end,
+
+    calculate = function(self, card, context)
+		if context.repetition then
+			if context.cardarea == G.play then
+				if context.other_card:get_id() == 7 then
+					return {
+                        message = localize({
+                            type = "variable",
+                            key = "a_xmult_chips",
+                            vars = { number_format(card.ability.extra.multiplier) },
+                        }),
+                        Xmult_mod = card.ability.extra.multiplier,
+                        Xchip_mod = card.ability.extra.multiplier,
+                        dollars = card.ability.extra.dollars,
+						repetitions = card.ability.extra.retriggers,
+                        card = card,
+					}
+				end
+			end
+		end
+	end,
+
+    check_for_unlock = function(self, args)
+        if args.type == 'test' then --not a real type, just a joke
+            unlock_card(self)
+        end
+        unlock_card(self) --unlocks the card if it isnt unlocked
+    end,
+}
+
 SMODS.Joker{
     key = 'placeholderjoker',
     loc_txt = {

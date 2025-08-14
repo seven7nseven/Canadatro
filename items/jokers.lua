@@ -2589,6 +2589,95 @@ SMODS.Joker{
     end,
 }
 
+SMODS.Atlas{
+    key = 'ps3',
+    path = 'ps3.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Sound({key = "ps3beep", path = "ps3.wav"})
+SMODS.Sound({key = "ps3tbeep", path = "ps3_tbeep.wav"})
+
+G._yellowness = 0
+G.yellowness = 0
+
+SMODS.Joker{
+    key = 'ps3',
+    loc_txt = {
+        name = 'fat playstation 3',
+        text = {'{X:mult,C:white} X#1#{} mult, {C:green}#2# іn #3#{} chance for the game to get more {B:1,C:white}yellow{} tinted',
+                '{C:inactive}those who bumpgate{}'}
+    },
+    atlas = 'ps3',
+    rarity = 2,
+    cost = 1,
+    pools = {["Canadaaddition"] = true},
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = false,
+    perishable_compat = false,
+    hidden = true,
+
+    pos = {x=0, y= 0},
+    config = { extra = { Xmult_mod = 8, odds = 4} },
+
+    loc_vars = function(self, info_queue, center)
+        return { vars = {
+            number_format(center.ability.extra.Xmult_mod), 
+            number_format(G.GAME.probabilities.normal), 
+            number_format(center.ability.extra.odds), 
+            colours = { HEX('FFC652') }
+        }}
+    end,
+
+   calculate = function(self, card, context)
+        if context.joker_main then
+            if pseudorandom('ps3') < (G.GAME.probabilities.normal / card.ability.extra.odds) then
+                return {
+                    message = "#bumpgate",
+                    sound = "canadatro_ps3tbeep",
+                    colour = G.C.FILTER,
+                    -- Xmult_mod = lenient_bignum(card.ability.extra.Xmult_mod),
+                    func = function()
+                        self.pos.x = 1
+                        G._yellowness = G._yellowness + 0.05;
+                        print('wawa')
+                        G.E_MANAGER:add_event(Event({
+                            trigger = "after", 
+                            delay = 5, 
+                            func = function() 
+                                self.pos.x = 0
+                                return true 
+                            end,
+                            blocking = false
+                        }))
+                    end
+                }
+            end
+            return {
+                message = localize({
+                    type = "variable",
+                    key = "a_xmult",
+                    vars = { number_format(card.ability.extra.Xmult_mod) },
+                }),
+                sound = "canadatro_ps3beep",
+                Xmult_mod = lenient_bignum(card.ability.extra.Xmult_mod),
+            }
+        end
+   end,
+
+    check_for_unlock = function(self, args)
+        if args.type == 'test' then --not a real type, just a joke
+            unlock_card(self)
+        end
+        unlock_card(self) --unlocks the card if it isnt unlocked
+    end,
+}
+
+
 function getJokerID(card)
     if G.jokers then
         local _selfid = 0
@@ -2620,6 +2709,10 @@ function decrementingTickEvent(type,tick)
             if _subcardcenter.frame > 12 then _subcardcenter.frame = 0 end
         end
     end
+end
+
+function llerp(v0, v1, t)
+    return (1 - t) * v0 + t * v1;
 end
 
 local upd = Game.update
@@ -2654,10 +2747,16 @@ function Game:update(dt)
             if G.GAME.normalgamespeed == nil and G.SETTINGS.GAMESPEED ~= 0.25 then G.GAME.normalgamespeed = G.SETTINGS.GAMESPEED end
         end
     end
+
+    G.yellowness = llerp(G.yellowness, G._yellowness, dt * G.SETTINGS.GAMESPEED)
 end
 
 local drawhook = love.draw
 function love.draw()
+    local _xscale = love.graphics.getWidth()/1920
+    local _yscale = love.graphics.getHeight()/1080
+    love.graphics.clear()
+    love.graphics.setBlendMode('alpha')
     drawhook()
 
     function loadImagePlease(fn)
@@ -2668,9 +2767,6 @@ function love.draw()
         --print ("LTFNI: Successfully loaded " .. fn)
         return (assert(love.graphics.newImage(tempimagedata),("Epic fail 3")))
     end
-
-    local _xscale = love.graphics.getWidth()/1920
-    local _yscale = love.graphics.getHeight()/1080
 
     -- cantaloupe
     if G.showthumbsup and (G.showthumbsup > 0) then
@@ -2698,6 +2794,11 @@ function love.draw()
         love.graphics.setColor(1, 1, 1, 1) 
         love.graphics.draw(Canadatro.showgradient, 0*_xscale*2, 0*_yscale*2,0,_xscale*2*2,_yscale*2*2)
     end
+
+
+    love.graphics.setBlendMode('lighten', 'premultiplied')
+    love.graphics.setColor((255 / 255) * G.yellowness, (198 / 255) * G.yellowness, (82 / 255) * G.yellowness, G.yellowness)
+    love.graphics.rectangle('fill', 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
 end
 ----------------------------------------------
 ------------MOD CODE END----------------------

@@ -2172,6 +2172,7 @@ SMODS.Joker{
     perishable_compat = false,
 
     pos = {x=0, y= 0},
+    soul_pos = { x = 0, y = 1 },
     config = {extra = {mult = 1, roundsleft = 10, loss = 1}},
 
     loc_vars = function(self, info_queue, center)

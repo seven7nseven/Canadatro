@@ -25,7 +25,15 @@ SMODS.Rarity({
 })
 
 SMODS.Rarity({
-	key = "unversale",
+	key = "hepten",
 	loc_txt = {},
-	badge_colour = HEX("00ffea"),
+	badge_colour = HEX("2d2131"),
+	default_weight = 0.0001,
+	pools = { ["Joker"] = true },
+})
+
+SMODS.Rarity({
+	key = "deity",
+	loc_txt = {},
+	badge_colour = HEX("4cd482"),
 })

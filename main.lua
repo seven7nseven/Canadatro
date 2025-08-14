@@ -13,7 +13,8 @@ end
 
 G.C.CANADARED = HEX("ff7676")
 G.C.CANADAWHITE = HEX("fff3f3")
-G.C.CANADABLUE = HEX("b476ff")
+G.C.CANADABLUE = HEX("00a2a2")
+G.C.CANADAGRAY = HEX("272727")
 G.C.mid_flash = 0
 G.C.vort_time = 7
 G.C.vort_speed = 0.25
@@ -68,6 +69,36 @@ SMODS.ObjectType({
 SMODS.ObjectType({
 	key = "Messedjokers",
 	default = "j_reserved_parking",
+	cards = {},
+	inject = function(self)
+		SMODS.ObjectType.inject(self)
+		-- insert base game food jokers
+	end,
+})
+
+SMODS.ObjectType({
+	key = "Country",
+	default = "j_canadatro_finland",
+	cards = {},
+	inject = function(self)
+		SMODS.ObjectType.inject(self)
+		-- insert base game food jokers
+	end,
+})
+
+SMODS.ObjectType({
+	key = "SixAmJoker",
+	default = "j_canadatro_is6am",
+	cards = {},
+	inject = function(self)
+		SMODS.ObjectType.inject(self)
+		-- insert base game food jokers
+	end,
+})
+
+SMODS.ObjectType({
+	key = "Deity",
+	default = "j_canadatro_unversale",
 	cards = {},
 	inject = function(self)
 		SMODS.ObjectType.inject(self)

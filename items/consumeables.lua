@@ -65,15 +65,15 @@ SMODS.Atlas{
 
 SMODS.Consumable {
     set = "Spectral",
-    key = "canadatro_summon",
+    key = "summon",
     loc_txt = {
-        name = 'summon unversale',
+        name = 'summon deity',
         text = {
             "use to summon",
-            "{X:dark_edition,C:white}unversale{}"
+            "a {X:dark_edition,C:white}deity{} joker"
         }
     },
-    cost = 4,
+    cost = 50,
     atlas = "summon",
     pos = {x=0, y=0},
     hidden = true,
@@ -85,7 +85,7 @@ SMODS.Consumable {
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				play_sound("timpani")
-				local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_canadatro_unversale", "canadatro_summon")
+				local card = create_card("Deity", G.jokers, nil, nil, nil, nil, nil, "canadatro_summon")
 				card:add_to_deck()
 				G.jokers:emplace(card)
 				card:juice_up(0.3, 0.5)

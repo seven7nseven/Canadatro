@@ -519,7 +519,7 @@ SMODS.Joker{
     atlas = 'france',
     rarity = "canadatro_fuck",
     cost = 2,
-    pools = {["Canadaaddition"] = true, ["Messedjokers"] = true},
+    pools = {["Messedjokers"] = true, ["Country"] = true},
 
     unlocked = true,
     discovered = true,
@@ -579,7 +579,7 @@ SMODS.Joker{
     atlas = 'finland',
     rarity = 2,
     cost = 5,
-    pools = {["Canadaaddition"] = true},
+    pools = {["Canadaaddition"] = true, ["Country"] = true},
 
     unlocked = true,
     discovered = true,
@@ -643,7 +643,7 @@ SMODS.Joker{
     atlas = 'canada',
     rarity = 4,
     cost = 25,
-    pools = {["Canadaaddition"] = true},
+    pools = {["Canadaaddition"] = true, ["Country"] = true},
 
     
     unlocked = true,
@@ -673,21 +673,21 @@ SMODS.Joker{
                 type = "variable",
                 key = "a_powmult",
                 vars = {
-                    number_format(card.ability.extra.emult),
+                    number_format(card.ability.extra.emulttotal),
                 },
             }),
             Emult_mod = card.ability.extra.emulttotal
         }
     end
-end,
-
-    check_for_unlock = function(self, args)
-        if args.type == 'test' then --not a real type, just a joke
-            unlock_card(self)
-        end
-        unlock_card(self) --unlocks the card if it isnt unlocked
     end,
-}  
+
+        check_for_unlock = function(self, args)
+            if args.type == 'test' then --not a real type, just a joke
+                unlock_card(self)
+            end
+            unlock_card(self) --unlocks the card if it isnt unlocked
+        end,
+    }  
 
 SMODS.Sound({key = "concidered", path = "concidered.ogg"})
 
@@ -703,14 +703,15 @@ SMODS.Joker{
     key = 'is6am',
     loc_txt= {
         name = 'is 6 am concidered night?',
-        text = {"{C:red}+#1#{} mult and {C:attention}6 zloty{}",
+        text = {"{C:red}+#1#{} mult, {C:attention}#2# zloty{}",
+                "and {X:chips,C:white}x#3#{} chips",
                 "when a {C:blue}6.....{} is scored",
                 "{C:inactive}is 6 am concidered night?{}",
     },},
     atlas = 'is6am',
-    rarity = 2,
+    rarity = 3,
     cost = 6,
-    pools = {["Canadaaddition"] = true},
+    pools = {["Canadaaddition"] = true, ["SixAmJoker"] = true},
     
     unlocked = true,
     discovered = true,
@@ -719,10 +720,10 @@ SMODS.Joker{
     perishable_compat = false,
 
     pos = {x=0, y= 0},
-    config = { extra = {mult = 6, money = 6}},
+    config = { extra = {mult = 6, money = 6, xchips = 1.6}},
 
     loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.mult, center.ability.extra.Xmult }  }
+		return { vars = { center.ability.extra.mult, center.ability.extra.money, center.ability.extra.xchips }  }
 	end,
 
     calculate = function(self, card, context)
@@ -733,6 +734,7 @@ SMODS.Joker{
             return {
                 mult = card.ability.extra.mult,
                 dollars = card.ability.extra.money,
+                Xchip_mod = card.ability.extra.xchips,
                 message = "is 6 am concidered night?",
                 sound = "canadatro_concidered",
             }
@@ -798,15 +800,15 @@ SMODS.Joker{
             Xmult_mod = card.ability.extra.xmulttotal
         }
     end
-end,
-
-    check_for_unlock = function(self, args)
-        if args.type == 'test' then --not a real type, just a joke
-            unlock_card(self)
-        end
-        unlock_card(self) --unlocks the card if it isnt unlocked
     end,
-}  
+
+        check_for_unlock = function(self, args)
+            if args.type == 'test' then --not a real type, just a joke
+                unlock_card(self)
+            end
+            unlock_card(self) --unlocks the card if it isnt unlocked
+        end,
+    }  
 
 SMODS.Sound({key = "yess", path = "dallasyippee.ogg"})
 SMODS.Sound({key = "noooo", path = "dallasouch.ogg"})
@@ -1135,6 +1137,8 @@ SMODS.Joker{
     end,
 }
 
+SMODS.Sound({key = "thedread", path = "burst.ogg"})
+
 -- Sisyphus
 SMODS.Atlas{
     key = 'thedreaded',
@@ -1165,6 +1169,7 @@ SMODS.Joker{
     config = { extra = {Xmult = 0.25, Xchips = 0.25, money = 15, chance = 20}},
 
     loc_vars = function(self, info_queue, center)
+        info_queue[#info_queue+1] = {key = 'canadatro_ideacredit', set = 'Other', vars = { "Remi" }}
 		return { vars = { center.ability.extra.Xmult, center.ability.extra.Xchips, center.ability.extra.money, G.GAME.probabilities.normal, center.ability.extra.chance }  }
 	end,
 
@@ -1176,6 +1181,7 @@ SMODS.Joker{
                     Xmult_mod = card.ability.extra.Xmult,
                     Xchip_mod = card.ability.extra.Xchips,
                     dollars = card.ability.extra.money,
+                    sound = 'canadatro_thedread',
                 }
             end
         end
@@ -1310,6 +1316,7 @@ SMODS.Joker{
     Xmult = 0.5,}},
 
 	loc_vars = function(self, info_queue, center)
+        info_queue[#info_queue+1] = {key = 'canadatro_ideacredit', set = 'Other', vars = { "Remi" }}
 		return {
 			vars = {
 				number_format(center.ability.extra.Xchips),
@@ -1384,22 +1391,22 @@ SMODS.Joker{
 }
 
 SMODS.Atlas{
-    key = 'evillerril',
-    path = 'evillerril.png',
+    key = 'lirrel',
+    path = 'lirrel.png',
     px = 71,
     py = 95,
 }
 
 SMODS.Joker{
-    key = 'evillerril',
+    key = 'lirrel',
     loc_txt = {
         name = 'lirrel',
         text = {'BYE'},
     },
-    atlas = 'evillerril',
-    rarity = "Canadatro_fuck",
+    atlas = 'lirrel',
+    rarity = 'canadatro_fuck',
     cost = 1,
-    pools = {["Canadaaddition"] = true},
+    pools = {["Canadaaddition"] = true, ["Messedjokers"] = true},
 
     unlocked = true,
     discovered = true,
@@ -1408,17 +1415,18 @@ SMODS.Joker{
     perishable_compat = false,
 
     pos = {x=0, y= 0},
-    config = { extra = {chance = 500, money = -973542}},
+    config = { extra = {chance = 100, money = -1000000000000000000}},
 
     loc_vars = function(self, info_queue, center)
+        info_queue[#info_queue+1] = {key = 'canadatro_ideacredit', set = 'Other', vars = { "Ghost/Lerril" }}
 		return { vars = {center.ability.extra.money, G.GAME.probabilities.normal, center.ability.extra.chance }  }
 	end,
 
     calculate = function(self, card, context)
 		if context.joker_main then
-            if pseudorandom('evillerril') < (G.GAME.probabilities.normal / card.ability.extra.chance) then
+            if pseudorandom('lirrel') < (G.GAME.probabilities.normal / card.ability.extra.chance) then
                 return {
-                    message = "just wanted to say BYE",
+                    message = "just DIDNT want to say BYE",
                     dollars = card.ability.extra.money,
                 }
             else
@@ -1460,6 +1468,7 @@ SMODS.Joker{
     config = { extra = {chips = 27.18281828459045235306287471352662497759995957496696762}},
 
     loc_vars = function(self, info_queue, center)
+        info_queue[#info_queue+1] = {key = 'canadatro_ideacredit', set = 'Other', vars = { "Remi" }}
 		return { vars = { center.ability.extra.chips}  }
 	end,
 
@@ -1494,7 +1503,7 @@ SMODS.Joker{
         name = 'amrt :3',
         text = {'{C:blue}:3{}',
                 '{C:red}:3{}',
-                '{X:chip,C:white}:3{}'}
+                '{X:chips,C:white}:3{}'}
     },
     atlas = 'amrt',
     rarity = 'canadatro_amrt',
@@ -1511,6 +1520,7 @@ SMODS.Joker{
     config = { extra = {chips = 3}},
 
     loc_vars = function(self, info_queue, center)
+        info_queue[#info_queue+1] = {key = 'canadatro_ideacredit', set = 'Other', vars = { "Remi" }}
 		return { vars = { center.ability.extra.chips}  }
 	end,
 
@@ -1547,9 +1557,9 @@ SMODS.Joker{
                 'every card gives {X:dark_edition,C:white}^#1#{} {C:blue}chips and {C:red}mult{} when scored'}
     },
     atlas = 'unversale',
-    rarity = 'canadatro_unversale',
+    rarity = 'canadatro_deity',
     cost = 185334324,
-    pools = {["Canadaaddition"] = true},
+    pools = {["Canadaaddition"] = true, ["Deity"] = true},
 
     unlocked = true,
     discovered = true,
@@ -1559,7 +1569,7 @@ SMODS.Joker{
     hidden = true,
 
     pos = {x=0, y= 0},
-    config = { extra = {exponent = 1.5, repetitions = 5}},
+    config = { extra = {exponent = 1.15, repetitions = 2}},
 
     loc_vars = function(self, info_queue, center)
 		return { vars = {center.ability.extra.exponent, center.ability.extra.repetitions}  }
@@ -1990,6 +2000,628 @@ SMODS.Joker{
     end,
 }
 
+-- a MEAN country
+SMODS.Atlas{
+    key = 'alook',
+    path = 'letstakealook.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Joker {
+    key = "alook",
+    loc_txt = {
+        name = 'LETS TAKE A LOOK...',
+        text = {'retrigger {C:attention}leftmost{} and',
+                '{C:attention}rightmost{} jokers {C:attention}#1#{} times'}
+    },
+    rarity = 'canadatro_hepten',
+    cost = 40,
+    blueprint_compat = false,
+    unlocked = true,
+	discovered = true,
+    eternal_compat = true,
+    pools = { ["Canadaaddition"] = true },
+    atlas = "alook",
+    pos = { x = 0, y = 0 },
+    config = {extra = {repetitions = 5}},
+    loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra.repetitions}}
+	end,
+    calculate = function(self, card, context)
+        if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
+			if context.other_card == (G.jokers.cards[1].debuff and G.jokers.cards[2] or G.jokers.cards[1]) or context.other_card == ((G.jokers.cards[#G.jokers.cards].debuff and G.jokers.cards[#G.jokers.cards - 1]) and G.jokers.cards[#G.jokers.cards - 1] or G.jokers.cards[#G.jokers.cards]) then
+				return {
+					message = localize('k_again_ex'),
+					repetitions = card.ability.extra.repetitions,
+					card = card
+				}
+			else
+				return nil, true
+			end
+        end
+	end
+}
+
+-- a MEAN country
+SMODS.Atlas{
+    key = 'starwalker',
+    path = 'starwalker.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Joker{
+    key = 'starwalker',
+    loc_txt = {
+        name = 'starwalker',
+        text = {'scored {C:attention}diamonds{} give {X:mult,C:white}x#1#{} mult'}
+    },
+    atlas = 'starwalker',
+    rarity = 2,
+    cost = 6,
+    pools = {["Canadaaddition"] = true},
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = false,
+    perishable_compat = false,
+    hidden = true,
+
+    pos = {x=0, y= 0},
+    config = { extra = {xmult = 1.3, suit = "Diamonds"}},
+
+    loc_vars = function(self, info_queue, center)
+		return { vars = {center.ability.extra.xmult}  }
+	end,
+
+    calculate = function(self, card, context)
+            if context.cardarea == G.play and context.individual and context.other_card then
+                local _trigger = false
+                if context.other_card:is_suit(card.ability.extra.suit) then _trigger = true end
+                if _trigger == true then
+                    return {
+                        message = "STAR WALK  ER",
+                        Xmult_mod = card.ability.extra.xmult,
+                    }
+                    end
+                end
+            end,
+
+    check_for_unlock = function(self, args)
+        if args.type == 'test' then --not a real type, just a joke
+            unlock_card(self)
+        end
+        unlock_card(self) --unlocks the card if it isnt unlocked
+    end,
+}
+
+-- trigonometry
+SMODS.Atlas{
+    key = 'squidgame',
+    path = 'squidgame.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Joker{
+    key = 'squidgame',
+    loc_txt = {
+        name = 'squid game gif',
+        text = {'IF WE WIN WHAT DO WE GET',
+                '{C:attention}#1# robux{}'}
+    },
+    atlas = 'squidgame',
+    rarity = 1,
+    cost = 3,
+    pools = {["Canadaaddition"] = true},
+
+    pixel_size = { w = 71 , h = 95 },
+    frame = 0,
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = false,
+    perishable_compat = false,
+
+    pos = {x=0, y= 0},
+    config = {extra = {dollar = 4}},
+
+    loc_vars = function(self, info_queue, center)
+		return { vars = {center.ability.extra.dollar}}
+	end,
+
+    calc_dollar_bonus = function(self,card)
+        return card.ability.extra.dollar
+    end,
+
+    check_for_unlock = function(self, args)
+        if args.type == 'test' then --not a real type, just a joke
+            unlock_card(self)
+        end
+        unlock_card(self) --unlocks the card if it isnt unlocked
+    end,
+}
+
+-- trigonometry
+SMODS.Atlas{
+    key = 'dough',
+    path = 'dough.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Joker{
+    key = 'dough',
+    loc_txt = {
+        name = 'dough',
+        text = {'{C:red}+#1#{} mult',
+                '{C:inactive}(transforms into {C:dark_edition}donut {C:inactive}in {C:attention}#2#{C:inactive} rounds){}'}
+    },
+    atlas = 'dough',
+    rarity = 2,
+    cost = 3,
+    pools = {["Canadaaddition"] = true},
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = false,
+    perishable_compat = false,
+
+    pos = {x=0, y= 0},
+    config = {extra = {mult = 1, roundsleft = 10, loss = 1}},
+
+    loc_vars = function(self, info_queue, center)
+		return { vars = {center.ability.extra.mult, center.ability.extra.roundsleft}}
+	end,
+
+    calculate = function(self, card, context)
+        if context.end_of_round and context.cardarea == G.jokers then
+            if card.ability.extra.roundsleft > (1 + card.ability.extra.loss) then
+                card.ability.extra.roundsleft = (card.ability.extra.roundsleft - card.ability.extra.loss)
+                return{message = card.ability.extra.roundsleft .. "rounds left!"}
+            else
+                local donutcreation = create_card("Joker", G.jokers, nil, nil, nil, nil, 'j_canadatro_donut')
+				donutcreation:add_to_deck()
+				G.jokers:emplace(donutcreation)
+                card:start_dissolve({G.C.RED})
+                return{
+                    message = "baked a donut for you!",
+                }
+            end
+        end
+
+        if context.joker_main then
+            return 
+                {
+                mult = card.ability.extra.mult,
+                }
+            end
+        end,
+
+    check_for_unlock = function(self, args)
+        if args.type == 'test' then --not a real type, just a joke
+            unlock_card(self)
+        end
+        unlock_card(self) --unlocks the card if it isnt unlocked
+    end,
+}
+
+-- france
+SMODS.Atlas{
+    key = 'donut',
+    path = 'donut.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Joker{
+    key = 'donut',
+    loc_txt = {
+        name = 'donut',
+        text = {'{X:mult,C:white}x#1#{} mult',
+                'gain {X:mult,C:white}x#2#{} mult per {C:attention}country joker{}',
+                'summon a {C:dark_edition}negative {C:attention}finland^3{} at the end of the round',
+                '{C:inactive}(currently {X:mult,C:white}x#3#{C:inactive} mult){}'}
+    },
+    atlas = 'donut',
+    rarity = 'canadatro_deity',
+    cost = 12839812598,
+    pools = {["Canadaaddition"] = true, ["Deity"] = true},
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = false,
+
+    pos = {x=0, y= 0},
+    config = {extra = {Xmult = 5, Xmultgain = 1, Xmulttotal = 5}},
+
+    loc_vars = function(self, info_queue, center)
+		return { vars = {center.ability.extra.Xmult, center.ability.extra.Xmultgain, center.ability.extra.Xmulttotal}}
+	end,
+
+    calculate = function(self, card, context)
+        if context.end_of_round and context.cardarea == G.jokers then
+            if #G.jokers.cards <= G.jokers.config.card_limit then
+                local finlandia = create_card('Joker', G.Jokers, nil, nil, nil, nil, 'j_canadatro_finland')
+                finlandia:set_edition({ negative = true })
+                finlandia:add_to_deck()
+                G.jokers:emplace(finlandia)
+                return {
+                    message = "FINLAND FOREVER!!",    
+                }
+            end
+        end
+
+        finlandcount = 0
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i].config.center.pools and G.jokers.cards[i].config.center.pools.Country then
+                finlandcount = finlandcount + 1
+            end
+        end
+        card.ability.extra.Xmulttotal = finlandcount + card.ability.extra.Xmult
+
+        if context.joker_main then
+            return{
+                card = card,
+                Xmult_mod = card.ability.extra.Xmulttotal,
+                message = 'X' .. card.ability.extra.Xmulttotal,
+            }
+        end
+    end,
+
+    check_for_unlock = function(self, args)
+        if args.type == 'test' then --not a real type, just a joke
+            unlock_card(self)
+        end
+        unlock_card(self) --unlocks the card if it isnt unlocked
+    end,
+}
+
+-- trigonometry
+SMODS.Atlas{
+    key = 'butterfinger',
+    path = 'butterfinger.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Joker{
+    key = 'butterfinger',
+    loc_txt = {
+        name = 'butterfinger in orlando',
+        text = {'either gives',
+                '{C:blue}+#1#{} chips',
+                'or {C:red}+#2#{} mult'}
+    },
+    atlas = 'butterfinger',
+    rarity = 1,
+    cost = 3,
+    pools = {["Canadaaddition"] = true},
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = false,
+    perishable_compat = false,
+
+    pos = {x=0, y= 0},
+    config = {extra = {chips = 40, mult = 5}},
+
+    loc_vars = function(self, info_queue, center)
+		return { vars = {center.ability.extra.chips, center.ability.extra.mult}}
+	end,
+
+    calculate = function(self, card, context)
+        if context.joker_main then
+            if math.random(1,2) == 1 then
+                return {
+                    color = G.C.BLUE,
+                    message = "+".. card.ability.extra.chips,
+                    chip_mod = card.ability.extra.chips
+                }
+            else
+                return {
+                    color = G.C.RED,
+                    message = "+".. card.ability.extra.mult,
+                    mult_mod = card.ability.extra.mult
+                }
+            end
+        end
+    end,
+
+    check_for_unlock = function(self, args)
+        if args.type == 'test' then --not a real type, just a joke
+            unlock_card(self)
+        end
+        unlock_card(self) --unlocks the card if it isnt unlocked
+    end,
+}
+
+-- trigonometry
+SMODS.Atlas{
+    key = 'conciderance',
+    path = 'conciderance.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Joker{
+    key = 'conciderance',
+    loc_txt = {
+        name = 'conciderance',
+        text = {'retrigger scored {C:green}6s...{}',
+                '{C:attention}#1#...{} times'}
+    },
+    atlas = 'conciderance',
+    rarity = 'canadatro_hepten',
+    cost = 40,
+    pools = {["Canadaaddition"] = true, ["SixAmJoker"] = true},
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = false,
+    perishable_compat = false,
+
+    pos = {x=0, y= 0},
+    config = {extra = {retriggers = 6}},
+
+    loc_vars = function(self, info_queue, center)
+		return { vars = {center.ability.extra.retriggers}}
+	end,
+
+	calculate = function(self, card, context)
+		if context.repetition then
+			if context.cardarea == G.play then
+				if context.other_card:get_id() == 6 then
+					return {
+						message = localize("k_again_ex"),
+						repetitions = card.ability.extra.retriggers,
+						card = card,
+					}
+				end
+			end
+		end
+	end,
+
+    check_for_unlock = function(self, args)
+        if args.type == 'test' then --not a real type, just a joke
+            unlock_card(self)
+        end
+        unlock_card(self) --unlocks the card if it isnt unlocked
+    end,
+}
+
+-- devesto
+SMODS.Atlas{
+    key = 'roberto',
+    path = 'roberto.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Joker{
+    key = 'roberto',
+    loc_txt = {
+        name = 'roberto',
+        text = {'placeholder, HOWEVER has to be the most powerful joker in the mod'}
+    },
+    atlas = 'roberto',
+    rarity = 'canadatro_deity',
+    cost = 521357129379273876,
+    pools = {["Canadaaddition"] = true, ["Deity"] = true},
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = false,
+    eternal_compat = false,
+    perishable_compat = false,
+
+    pos = {x=0, y= 0},
+    config = {extra = {placeholder = "true!"}},
+
+    loc_vars = function(self, info_queue, center)
+		return { vars = {center.ability.extra.placeholder}}
+	end,
+    check_for_unlock = function(self, args)
+        if args.type == 'test' then --not a real type, just a joke
+            unlock_card(self)
+        end
+        unlock_card(self) --unlocks the card if it isnt unlocked
+    end,
+}
+
+-- devesto
+SMODS.Atlas{
+    key = 'balatroirl',
+    path = 'balatroirl.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Joker{
+    key = 'balatroirl',
+    loc_txt = {
+        name = 'balatro in real life',
+        text = {'slows the game down to {C:attention}0.25x{}',
+                'while its in your inventory',
+                'also can sometimes subtract {C:red}mult{} due to a miscalculation'}
+    },
+    atlas = 'balatroirl',
+    rarity = 'canadatro_fuck',
+    cost = 1,
+    pools = {["Canadaaddition"] = true, ["Messedjokers"] = true},
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = false,
+    eternal_compat = false,
+    perishable_compat = false,
+
+    pos = {x=0, y= 0},
+    config = {extra = {mult = 50, chance = 6}},
+
+    loc_vars = function(self, info_queue, center)
+		return { vars = {center.ability.extra.chance, center.ability.extra.mult}}
+	end,
+
+    calculate = function(self, card, context)
+        if context.joker_main then
+            if pseudorandom('balatroirl') < (G.GAME.probabilities.normal / card.ability.extra.chance) then
+                return {
+                    mult = card.ability.extra.mult,
+                }
+            end
+        end
+    end,
+    check_for_unlock = function(self, args)
+        if args.type == 'test' then --not a real type, just a joke
+            unlock_card(self)
+        end
+        unlock_card(self) --unlocks the card if it isnt unlocked
+    end,
+}
+
+-- devesto
+SMODS.Atlas{
+    key = 'melanie',
+    path = 'melanie.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Joker{
+    key = 'melanie',
+    loc_txt = {
+        name = 'melanie',
+        text = {'steel cards give extra {X:mult,C:white}x#1#{} mult'}
+    },
+    atlas = 'melanie',
+    rarity = 1,
+    cost = 4,
+    pools = {["Canadaaddition"] = true},
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = false,
+    perishable_compat = false,
+    hidden = true,
+
+    pos = {x=0, y= 0},
+    config = { extra = {steelenhc = 1.25}},
+
+    loc_vars = function(self, info_queue, center)
+        info_queue[#info_queue+1] = {key = 'canadatro_bothcredit', set = 'Other', vars = { "Sinnvakr" }}
+		return { vars = {center.ability.extra.steelenhc}  }
+	end,
+
+    calculate = function(self, card, context)
+        if context.individual
+            and context.cardarea == G.hand
+            and not context.end_of_round
+            and SMODS.has_enhancement(context.other_card, "m_steel")
+            and to_big(card.ability.extra.steelenhc) ~= to_big(1)
+        then
+            if context.other_card.debuff then
+                return {
+                    message = localize("k_debuffed"),
+                    colour = G.C.RED,
+                    card = card,
+                }
+            else
+                return { xmult = lenient_bignum(card.ability.extra.steelenhc) }
+            end
+        end
+    end,
+
+    check_for_unlock = function(self, args)
+        if args.type == 'test' then --not a real type, just a joke
+            unlock_card(self)
+        end
+        unlock_card(self) --unlocks the card if it isnt unlocked
+    end,
+}
+
+SMODS.Joker{
+    key = 'placeholderjoker',
+    loc_txt = {
+        name = 'placeholder joker',
+        text = {'placeholder joker for effect testing',
+                'todays effect: nothing'}
+    },
+    atlas = 'apixel',
+    rarity = 1,
+    cost = 1,
+    pools = {["Canadaaddition"] = true},
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = false,
+    perishable_compat = false,
+    hidden = true,
+
+    pos = {x=0, y= 0},
+    config = { extra = {steelenhc = 1.25}},
+
+    loc_vars = function(self, info_queue, center)
+        info_queue[#info_queue+1] = {key = 'canadatro_artcredit', set = 'Other', vars = { "blabla" }}
+        info_queue[#info_queue+1] = {key = 'canadatro_ideacredit', set = 'Other', vars = { "blabla" }}
+		return { vars = {center.ability.extra.steelenhc}  }
+	end,
+
+    --    calculate = function(self, card, context)
+
+    --    end,
+
+    check_for_unlock = function(self, args)
+        if args.type == 'test' then --not a real type, just a joke
+            unlock_card(self)
+        end
+        unlock_card(self) --unlocks the card if it isnt unlocked
+    end,
+}
+
+function getJokerID(card)
+    if G.jokers then
+        local _selfid = 0
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i] == card then _selfid = i end
+        end
+        return _selfid
+    end
+end
+
+function jokerExists(abilityname)
+    local _check = false
+    if G.jokers and G.jokers.cards then
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i].ability.name == abilityname then _check = true end
+        end
+    end
+    return _check
+end
+
+function decrementingTickEvent(type,tick)
+    if type == "j_canadatro_squidgame" then
+        if math.fmod(Canadatro.ticks,12) == 0 then
+            local _subcardcenter = G.P_CENTERS.j_canadatro_squidgame
+            _subcardcenter.frame = _subcardcenter.frame + 1
+            local _fr = _subcardcenter.frame
+            _subcardcenter.pos.x = math.fmod(_fr,5)
+            _subcardcenter.pos.y = math.floor(_fr/5)
+            if _subcardcenter.frame > 12 then _subcardcenter.frame = 0 end
+        end
+    end
+end
+
 local upd = Game.update
 function Game:update(dt)
     upd(self, dt)
@@ -2004,11 +2636,23 @@ function Game:update(dt)
         Canadatro.ticks = Canadatro.ticks + 1
         Canadatro.dtcounter = Canadatro.dtcounter - 0.010
 
+        if jokerExists("j_canadatro_squidgame") then decrementingTickEvent("j_canadatro_squidgame",0) end
+
         if G.showthumbsup and G.showthumbsup > 0 then G.showthumbsup = G.showthumbsup - 1 end
 
         if G.showthumbsdown and G.showthumbsdown > 0 then G.showthumbsdown = G.showthumbsdown - 1 end
 
         if G.showhumpscare and G.showhumpscare > 0 then G.showhumpscare = G.showhumpscare - 1 end
+
+        if G.showgradient and G.showgradient > 0 then G.showgradient = G.showgradient - 1 end
+    end
+
+    if G.jokers then
+        if jokerExists("j_canadatro_balatroirl") then
+            G.SETTINGS.GAMESPEED = 0.25
+        else
+            if G.GAME.normalgamespeed == nil and G.SETTINGS.GAMESPEED ~= 0.25 then G.GAME.normalgamespeed = G.SETTINGS.GAMESPEED end
+        end
     end
 end
 
@@ -2047,6 +2691,12 @@ function love.draw()
         if Canadatro.humpscare == nil then Canadatro.humpscare = loadImagePlease("humpscare.png") end
         love.graphics.setColor(1, 1, 1, 1) 
         love.graphics.draw(Canadatro.humpscare, 0*_xscale*2, 0*_yscale*2,0,_xscale*2*2,_yscale*2*2)
+    end
+
+    if G.showgradient and (G.showgradient > 0) then
+        if Canadatro.showgradient == nil then Canadatro.showgradient = loadImagePlease("gradient.png") end
+        love.graphics.setColor(1, 1, 1, 1) 
+        love.graphics.draw(Canadatro.showgradient, 0*_xscale*2, 0*_yscale*2,0,_xscale*2*2,_yscale*2*2)
     end
 end
 ----------------------------------------------

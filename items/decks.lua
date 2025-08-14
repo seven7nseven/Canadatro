@@ -47,3 +47,43 @@ SMODS.Back{
 		end
 	end,
 }
+
+SMODS.Atlas{
+    key = 'shoppingcentre',
+    path = 'shoppingcentre.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Back{
+    key = "shopper",
+    loc_txt = {
+        name = "shopping centre",
+        text={
+        "start with {C:red}overstock plus{},",
+        "{C:attention}liquidation{}",
+        "and {C:green}reroll glut{} vouchers",
+        },
+    },
+	
+	config = {vouchers = {'v_overstock_norm','v_overstock_plus','v_reroll_surplus','v_reroll_glut','v_clearance_sale','v_liquidation'}},
+	pos = { x = 0, y = 0 },
+	order = 1,
+	atlas = "shoppingcentre",
+    unlocked = true,
+    check_for_unlock = function(self, args)
+		if args.type == "win_deck" then
+            unlock_card(self)
+        else
+			unlock_card(self)
+		end
+	end,
+
+    check_for_unlock = function(self, args)
+        if args.type == "win_deck" then
+            unlock_card(self)
+        else
+            unlock_card(self)
+        end
+    end,
+}

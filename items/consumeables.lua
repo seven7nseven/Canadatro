@@ -113,6 +113,61 @@ SMODS.Consumable {
 }
 
 SMODS.Atlas{
+    key = 'gradient_tarot',
+    path = 'gradienttarot.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Consumable {
+    set = "Tarot",
+    key = "canadatro_gradienttarot",
+    config = {
+        -- How many cards can be selected.
+        max_highlighted = 1,
+        -- the key of the seal to change to
+        extra = 'gradient_tarot',
+    },
+    loc_vars = function(self, info_queue, card)
+        -- Handle creating a tooltip with seal args.
+        info_queue[#info_queue+1] = G.P_CENTERS.e_canadatro_unpleasant
+        -- Description vars
+        return {vars = {(card.ability or self.config).max_highlighted}}
+    end,
+    loc_txt = {
+        name = 'unpleasant gradient',
+        text = {
+            "select {C:attention}#1#{} card to",
+            "make {C:blue}unpleasant{}"
+        }
+    },
+    cost = 4,
+    atlas = "gradient_tarot",
+    pos = {x=0, y=0},
+    use = function(self, card, area, copier)
+        for i = 1, math.min(#G.hand.highlighted, card.ability.max_highlighted) do
+            G.E_MANAGER:add_event(Event({func = function()
+                card:juice_up(0.3, 0.5)
+                return true end }))
+            
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
+                G.hand.highlighted[i].edition = "canadatro_unpleasant"
+                return true end }))
+            
+            delay(0.5)
+        end
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
+    end,
+
+    check_for_unlock = function(self, args)
+        if args.type == 'test' then --not a real type, just a joke
+            unlock_card(self)
+        end
+        unlock_card(self) --unlocks the card if it isnt unlocked
+    end,
+}
+
+SMODS.Atlas{
     key = 'summon',
     path = 'tsummon.png',
     px = 71,

@@ -2861,6 +2861,50 @@ SMODS.Joker{
     end,
 }
 
+SMODS.Atlas{
+    key = 'mrblingbling',
+    path = 'mrblingbling.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Joker{
+    key = 'mrblingbling',
+    loc_txt = {
+        name = 'mr bling bling',
+        text = {'{X:mult,C:white}x#2#{} mult',
+                '{X:chips,C:white}x#1#{} chips',
+                '{C:attention}#3#${}'}
+    },
+    atlas = 'mrblingbling',
+    rarity = "canadatro_fuck",
+    cost = 0,
+    pools = {["Canadaaddition"] = true, ["Messedjokers"] = true},
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = false,
+    perishable_compat = false,
+
+    pos = {x=0, y= 0},
+    config = { extra = {xchip = 0, xmult = 0, dollars = -100}},
+    loc_vars = function(self, info_queue, center)
+        return { vars = {center.ability.extra.xchip, center.ability.extra.xmult, center.ability.extra.dollars}}
+    end,
+
+    calculate = function(self, card, context)
+        if context.joker_main then
+            return 
+                {
+                Xchip_mod = card.ability.extra.xchip,
+                Xmult_mod = card.ability.extra.xmult,
+                dollars = card.ability.extra.dollars,
+                message = 'SOLD!'
+                }
+            end
+        end,
+}
 
 function getJokerID(card)
     if G.jokers then

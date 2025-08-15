@@ -1884,7 +1884,7 @@ SMODS.Joker{
                 'increases by {C:attention}#1#{} after every round'}
     },
     atlas = 'awe',
-    rarity = 2,
+    rarity = 3,
     cost = 6,
     pools = {["Canadaaddition"] = true},
 
@@ -2550,7 +2550,7 @@ SMODS.Joker{
     end,
 }
 
--- seven7nseven (EFFECT NOT IMPLEMENTED YET)
+-- seven7nseven
 SMODS.Atlas{
     key = 'seven7nseven',
     path = 'seven7n77.png',
@@ -2614,7 +2614,7 @@ SMODS.Joker{
     end,
 }
 
--- seven7nseven (EFFECT NOT IMPLEMENTED YET)
+-- seven7nseven
 SMODS.Atlas{
     key = 'collectmypages',
     path = 'collectmypages.png',
@@ -2861,6 +2861,110 @@ SMODS.Joker{
     end,
 }
 
+-- mr bling bling
+SMODS.Atlas{
+    key = 'mrblingbling',
+    path = 'mrblingbling.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Joker{
+    key = 'mrblingbling',
+    loc_txt = {
+        name = 'mr bling bling',
+        text = {'{X:mult,C:white}x#2#{} mult',
+                '{X:chips,C:white}x#1#{} chips',
+                '{C:attention}#3#${}'}
+    },
+    atlas = 'mrblingbling',
+    rarity = "canadatro_fuck",
+    cost = 0,
+    pools = {["Canadaaddition"] = true, ["Messedjokers"] = true},
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = false,
+    perishable_compat = false,
+
+    pos = {x=0, y= 0},
+    config = { extra = {xchip = 0, xmult = 0, dollars = -100}},
+    loc_vars = function(self, info_queue, center)
+        return { vars = {center.ability.extra.xchip, center.ability.extra.xmult, center.ability.extra.dollars}}
+    end,
+
+    calculate = function(self, card, context)
+        if context.joker_main then
+            return 
+                {
+                Xchip_mod = card.ability.extra.xchip,
+                Xmult_mod = card.ability.extra.xmult,
+                dollars = card.ability.extra.dollars,
+                message = 'SOLD!'
+                }
+            end
+        end,
+}
+
+-- she walter wit
+SMODS.Atlas{
+    key = 'shewalterwit',
+    path = 'shewalterwit.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Joker{
+    key = 'shewalterwit',
+    loc_txt = {
+        name = 'she Walter wit',
+        text = {'gains {C:blue}+#1#{} chips and {C:red}+#2#{} mult everytime a {C:green}6...{} is scored',
+                '{C:inactive}(currently {C:blue}+#3# {C:inactive}chips and {C:red}+#4# {C:inactive}mult){}'}
+    },
+    atlas = 'shewalterwit',
+    rarity = 3,
+    cost = 10,
+    pools = {["Canadaaddition"] = true, ["SixAmJoker"] = true},
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = false,
+    perishable_compat = false,
+    hidden = true,
+
+    pos = {x=0, y= 0},
+    config = { extra = {chip_mod = 6, mult_mod = 6, chips = 0, mult = 0}},
+
+    loc_vars = function(self, info_queue, center)
+        info_queue[#info_queue+1] = {key = 'canadatro_ideacredit', set = 'Other', vars = { "kalp" }}
+        return { vars = {center.ability.extra.chip_mod, center.ability.extra.mult_mod, center.ability.extra.chips, center.ability.extra.mult}  }
+    end,
+
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play then
+            if context.other_card:get_id() == 6 then
+                card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
+                card.ability.extra.mult = card.ability.extra.chips + card.ability.extra.mult_mod
+            end
+        end
+        if context.joker_main then
+            return 
+                {
+                chips = card.ability.extra.chips,
+                mult = card.ability.extra.mult,
+                }
+            end
+    end,
+
+    check_for_unlock = function(self, args)
+        if args.type == 'test' then --not a real type, just a joke
+            unlock_card(self)
+        end
+        unlock_card(self) --unlocks the card if it isnt unlocked
+    end,
+}
 
 function getJokerID(card)
     if G.jokers then

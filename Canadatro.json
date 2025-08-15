@@ -3,21 +3,21 @@
 	"name": "Canadatro",
 	"display_name": "Canadatro",
 	"author": [
-		"canada"
+		"seven7nseven and plank"
 	],
-	"description": "holy shit it's canada",
+	"description": "a mod meant to add memes and inside jokes to balatro",
 	"prefix": "canadatro",
 	"main_file": "main.lua",
-	"priority": 0,
+	"priority": 52,
 	"badge_colour": "ff7676",
 	"badge_text_colour": "fff3f3",
-	"version": "1",
+	"version": "2~dev",
 	"dependencies": [
 		"Lovely (>=0.7)",
-		"Balatro (>=1.0.1o)"
+		"Talisman (>=2.2.0a)"
 	],
 	"conflicts": [
-	"Talisman (<=2.0.2)",
-	"Cryptid (<<0.5.4)"
+		"AntePreview (>= 2.0.0~0c16a) (<<3.0.0)",
+		"Cartomancer (<= 4.11)"
 	]
 }

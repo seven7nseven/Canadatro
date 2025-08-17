@@ -3121,6 +3121,69 @@ SMODS.Joker{
         end,
 }
 
+-- nickmgc
+SMODS.Atlas{
+    key = 'nickmgc',
+    path = 'nick.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Joker{
+    key = 'nickmgc',
+    loc_txt = {
+        name = 'nick',
+        text = {'el stupido ruskiy',
+                'will also come with a {C:dark_edition}russia country joker{}'}
+    },
+    atlas = 'nickmgc',
+    rarity = 'canadatro_deity',
+    cost = 994884884773772838,
+    pools = {["Deity"] = true},
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = false,
+    eternal_compat = false,
+    perishable_compat = false,
+
+    pos = {x=0, y= 0},
+    soul_pos = { x = 0, y = 1 },
+    config = {extra = {retriggers = 7, multiplier = 7, dollars = 77}},
+
+    loc_vars = function(self, info_queue, center)
+        return { vars = {center.ability.extra.multiplier, center.ability.extra.retriggers, center.ability.extra.dollars}}
+    end,
+
+    calculate = function(self, card, context)
+        if context.repetition then
+            if context.cardarea == G.play then
+                if context.other_card:get_id() == 7 then
+                    return {
+                        message = localize({
+                            type = "variable",
+                            key = "a_xmult_chips",
+                            vars = { number_format(card.ability.extra.multiplier) },
+                        }),
+                        Xmult_mod = card.ability.extra.multiplier,
+                        Xchip_mod = card.ability.extra.multiplier,
+                        dollars = card.ability.extra.dollars,
+                        repetitions = card.ability.extra.retriggers,
+                        card = card,
+                    }
+                end
+            end
+        end
+    end,
+
+    check_for_unlock = function(self, args)
+        if args.type == 'test' then --not a real type, just a joke
+            unlock_card(self)
+        end
+        unlock_card(self) --unlocks the card if it isnt unlocked
+    end,
+}
+
 function getJokerID(card)
     if G.jokers then
         local _selfid = 0

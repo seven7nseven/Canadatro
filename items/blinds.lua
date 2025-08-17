@@ -155,6 +155,14 @@ SMODS.Blind {
     boss_colour = HEX('fd2ef6'),
 
     debuff_hand = function(self)
+        for i = 1, #G.play.cards do
+            if G.play.cards[i].edition == nil then
+                SMODS.juice_up_blind()
+                G.play.cards[i]:set_edition({canadatro_unpleasant = true}, true)
+                play_sound("canadatro_gradient")
+                delay(0.3)
+            end
+        end
         G.showgradient = 175
         play_sound("canadatro_gradient")
         end,

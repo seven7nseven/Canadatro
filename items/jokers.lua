@@ -3037,6 +3037,90 @@ SMODS.Joker{
     end,
 }
 
+-- kalp
+SMODS.Atlas{
+    key = 'kalp',
+    path = 'kalp.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Joker{
+    key = 'kalp',
+    loc_txt = {
+        name = 'kalp',
+        text = {'placeholder due to not having a finished effect decided upon',
+                'however as the creator of the legendary 6 am joke',
+                'he is an 6 am joker and will synergize with 6s in a way'}
+    },
+    atlas = 'kalp',
+    rarity = 'canadatro_deity',
+    cost = 66666666666666666666,
+    pools = {["Deity"] = true, ["SixAmJoker"] = true},
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = false,
+    eternal_compat = false,
+    perishable_compat = false,
+
+    pos = {x=0, y= 0},
+    soul_pos = { x = 0, y = 1 },
+    config = {extra = {placeholder = "true"}},
+
+    --loc_vars = function(self, info_queue, center)
+    --end,
+
+    --calculate = function(self, card, context)
+    --end,
+
+    check_for_unlock = function(self, args)
+        if args.type == 'test' then --not a real type, just a joke
+            unlock_card(self)
+        end
+        unlock_card(self) --unlocks the card if it isnt unlocked
+    end,
+}
+
+SMODS.Atlas{
+    key = 'obscurereference',
+    path = 'obscurereference.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Joker{
+    key = 'obscurereference',
+    loc_txt = {
+        name = 'obscure reference joker',
+        text = {'{C:red}canadatro{} is the type of mod to put an',
+                '{C:green}obscure reference{} joker in itself and make it',
+                'the {C:dark_edition}most overpowered joker{} ever'}
+    },
+    atlas = 'obscurereference',
+    rarity = 1,
+    cost = 3,
+    pools = {["Canadaaddition"] = true},
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = false,
+    perishable_compat = false,
+
+    pos = {x=0, y= 0},
+    config = { extra = {chip = 1}},
+
+    calculate = function(self, card, context)
+        if context.joker_main then
+            return 
+                {
+                chips = card.ability.extra.chip,
+                }
+            end
+        end,
+}
+
 function getJokerID(card)
     if G.jokers then
         local _selfid = 0

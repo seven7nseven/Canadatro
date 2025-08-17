@@ -2813,7 +2813,8 @@ SMODS.Joker{
     key = 'aurora',
     loc_txt = {
         name = 'aurora',
-        text = {'each queen played gives {X:dark_edition,C:white}^#1#{} mult and chips'}
+        text = {'each queen played gives {X:dark_edition,C:white}^#1#{C:chips} chips{} and {C:mult}mult{}',
+                'if {B:1,V:2}luma{} is present: each scored queen gives {C:attention}#2#${}'}
     },
     atlas = 'aurora',
     rarity = 'canadatro_deity',
@@ -2826,30 +2827,97 @@ SMODS.Joker{
     eternal_compat = true,
     perishable_compat = false,
 
-    pos = { x = 0, y = 0},
+    pos = { x = 0, y = 0 },
     soul_pos = { x = 1, y = 0 },
-    config = {extra = {exponent = 1.25}},
+    config = {extra = {exponent = 1.25, money = 12}},
 
     loc_vars = function(self, info_queue, center)
         info_queue[#info_queue+1] = {key = 'canadatro_bothcredit', set = 'Other', vars = { "plank" }}
-        return { vars = {center.ability.extra.exponent}}
+        return { vars = {center.ability.extra.exponent, center.ability.extra.money, colours = {HEX('CC6666'), HEX('FFFFCC')}}}
     end,
 
     calculate = function(self, card, context)
-        if context.cardarea == G.play and context.individual and context.other_card then
-            if context.other_card:get_id() == 12 then
-                return {
-                    message = localize({
-                        type = "variable",
-                        key = "a_powmultchips",
-                        vars = { number_format(card.ability.extra.exponent) },
-                    }),
-                    sound = "canadatro_aurora",
-                    Emult_mod = card.ability.extra.exponent,
-                    Echip_mod = card.ability.extra.exponent,
-                    card = card,
-                }
-            end
+        if context.cardarea == G.play and context.individual and context.other_card:get_id() == 12 then
+            local output = {
+                message = localize({
+                    type = "variable",
+                    key = 'a_powmultchips',
+                    vars = { number_format(card.ability.extra.exponent) }
+                }),
+                sound = "canadatro_aurora",
+                Emult_mod = card.ability.extra.exponent,
+                Echip_mod = card.ability.extra.exponent,
+                card = card
+            }
+
+            if jokerExists('j_canadatro_luma') then output.dollars = card.ability.extra.money end
+
+            return output
+        end
+    end,
+
+    check_for_unlock = function(self, args)
+        if args.type == 'test' then --not a real type, just a joke
+            unlock_card(self)
+        end
+        unlock_card(self) --unlocks the card if it isnt unlocked
+    end,
+}
+
+-- fatass
+SMODS.Atlas{
+    key = 'luma',
+    path = 'luma.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Joker{ 
+    key = 'luma',
+    loc_txt = {
+        name = 'luma',
+        text = {'{X:dark_edition,C:white}^#1#{C:chips} chips{} and {C:mult}mult{} for every played card from the {B:1,C:white}hearts{} suit',
+                'if {B:2,V:3}aurora{} is present: retrigger all queens #2# times if possible'}
+    },
+    atlas = 'luma',
+    rarity = 'canadatro_deity',
+    cost = 2147483647,
+    pools = {["Deity"] = true},
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = false,
+
+    pos = { x = 0, y = 0 },
+    soul_pos = { x = 1, y = 0 },
+    config = { extra = { exponent = 1.2, repetitions = 2 } },
+
+    loc_vars = function(self, info_queue, center)
+        info_queue[#info_queue+1] = {key = 'canadatro_artcredit', set = 'Other', vars = { "plank" }}
+        return { vars = {center.ability.extra.exponent, center.ability.extra.repetitions,  colours = {G.C.SUITS.Hearts, HEX('360069'), HEX('FFF0FF')}}}
+    end,
+
+    calculate = function(self, card, context)
+        if context.repetition and context.cardarea == G.play and context.other_card:get_id() == 12 and jokerExists('j_canadatro_aurora') then
+            return {
+                message = localize('k_again_ex'),
+                repetitions = card.ability.extra.repetitions,
+                card = card
+            }
+        end
+
+        if context.cardarea == G.play and context.individual and context.other_card:is_suit('Hearts', false, false) then
+            return {
+                message = localize({
+                    type = "variable",
+                    key = "a_powmultchips",
+                    vars = { number_format(card.ability.extra.exponent) },
+                }),
+                Emult_mod = lenient_bignum(card.ability.extra.exponent),
+                Emult_mod = lenient_bignum(card.ability.extra.exponent),
+            }
         end
     end,
 
@@ -2868,6 +2936,8 @@ SMODS.Atlas{
     px = 71,
     py = 95,
 }
+
+SMODS.Sound({key = "mrblingblingboy", path = "cash.ogg"})
 
 SMODS.Joker{
     key = 'mrblingbling',
@@ -2901,7 +2971,8 @@ SMODS.Joker{
                 Xchip_mod = card.ability.extra.xchip,
                 Xmult_mod = card.ability.extra.xmult,
                 dollars = card.ability.extra.dollars,
-                message = 'SOLD!'
+                message = 'SOLD!',
+                sound = "canadatro_mrblingblingboy"
                 }
             end
         end,
@@ -2986,6 +3057,16 @@ function jokerExists(abilityname)
     return _check
 end
 
+function jokerIndecies(abilityname)
+    local jokers = {}
+    if G.jokers and G.jokers.cards then
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i].ability.name == abilityname then table.insert(jokers, i) end
+        end
+    end
+    return jokers
+end
+
 function decrementingTickEvent(type,tick)
     if type == "j_canadatro_squidgame" then
         if math.fmod(Canadatro.ticks,12) == 0 then
@@ -3035,6 +3116,8 @@ function Game:update(dt)
             if G.GAME.normalgamespeed == nil and G.SETTINGS.GAMESPEED ~= 0.25 then G.GAME.normalgamespeed = G.SETTINGS.GAMESPEED end
         end
     end
+
+    if love.keyboard.isDown('f5') then SMODS.restart_game() end
 
     G.yellowness = llerp(G.yellowness, G._yellowness, dt * G.SETTINGS.GAMESPEED)
 end

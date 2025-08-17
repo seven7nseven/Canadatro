@@ -36,6 +36,7 @@ return {
             a_powmult = { "^#1# Mult" },
 			a_powchips = { "^#1# Chips" },
             a_powmultchips = { "^#1# Mult+Chips" },
+            a_powmultchipsmoney = { "^#1# Mult+Chips; +#2#$" },
             a_xmult_chips = {"x#1# Mult+Chips"},
         }
     }

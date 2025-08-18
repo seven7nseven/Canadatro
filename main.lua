@@ -48,7 +48,7 @@ SMODS.current_mod.optional_features = {
 
 SMODS.ObjectType({
 	key = "Canadaaddition",
-	default = "j_reserved_parking",
+	default = "j_canadatro_firstjoker",
 	cards = {},
 	inject = function(self)
 		SMODS.ObjectType.inject(self)
@@ -58,7 +58,7 @@ SMODS.ObjectType({
 
 SMODS.ObjectType({
 	key = "Emiliajump",
-	default = "j_reserved_parking",
+	default = "j_canadatro_emilia",
 	cards = {},
 	inject = function(self)
 		SMODS.ObjectType.inject(self)
@@ -68,7 +68,7 @@ SMODS.ObjectType({
 
 SMODS.ObjectType({
 	key = "Messedjokers",
-	default = "j_reserved_parking",
+	default = "j_canadatro_france",
 	cards = {},
 	inject = function(self)
 		SMODS.ObjectType.inject(self)
@@ -79,6 +79,16 @@ SMODS.ObjectType({
 SMODS.ObjectType({
 	key = "Country",
 	default = "j_canadatro_finland",
+	cards = {},
+	inject = function(self)
+		SMODS.ObjectType.inject(self)
+		-- insert base game food jokers
+	end,
+})
+
+SMODS.ObjectType({
+	key = "Russia",
+	default = "j_canadatro_russia",
 	cards = {},
 	inject = function(self)
 		SMODS.ObjectType.inject(self)

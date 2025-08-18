@@ -501,6 +501,55 @@ SMODS.Joker{
     end,
 }
 
+-- russia
+SMODS.Atlas{
+    key = 'russia',
+    path = 'russia.png',
+    px = 71,
+    py = 95,
+}
+
+SMODS.Joker{
+    key = 'russia',
+    loc_txt = {
+        name = 'russia',
+        text = {'does {C:dark_edition}absolutely fucking nothing {C:inactive}cause of course it does{}',
+                'also gives {C:green}#1#$ {C:inactive}cause of course it does{}'}
+    },
+    atlas = 'russia',
+    rarity = "canadatro_fuck",
+    cost = 2,
+    pools = {["Messedjokers"] = true, ["Country"] = true, ["Russia"] = true},
+
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = false,
+
+    pos = {x=0, y= 0},
+    config = {extra = {dollars = -1}},
+
+    loc_vars = function(self, info_queue, center)
+        return { vars = {center.ability.extra.dollars}}
+    end,
+
+    calculate = function(self, card, context)
+        if context.joker_main then
+            return {
+                dollars = card.ability.extra.dollars,
+                }
+        end
+    end,
+
+    check_for_unlock = function(self, args)
+        if args.type == 'test' then --not a real type, just a joke
+            unlock_card(self)
+        end
+        unlock_card(self) --unlocks the card if it isnt unlocked
+    end,
+}
+
 -- france
 SMODS.Atlas{
     key = 'france',
@@ -2223,9 +2272,9 @@ SMODS.Joker{
     loc_txt = {
         name = 'donut',
         text = {'{X:mult,C:white}x#1#{} mult',
-                'gain {X:mult,C:white}x#2#{} mult per {C:attention}country joker{}',
+                'gain {X:mult,C:white}x#2#{} mult per {C:attention}country joker{} in possession',
                 'summon a {C:dark_edition}negative {C:attention}finland^3{} at the end of the round',
-                '{C:inactive}(currently {X:mult,C:white}x#3#{C:inactive} multz`){}'}
+                '{C:inactive}(currently {X:mult,C:white}x#3#{C:inactive} mult){}'}
     },
     atlas = 'donut',
     rarity = 'canadatro_deity',
@@ -3133,8 +3182,9 @@ SMODS.Joker{
     key = 'nickmgc',
     loc_txt = {
         name = 'nick',
-        text = {'el stupido ruskiy',
-                'will also come with a {C:dark_edition}russia country joker{}'}
+        text = {'retrigger every card {C:dark_edition}#1#{} times',
+                'increases by {C:attention}#2#{} per {C:red}russia{} in possession',
+                'summons a {C:dark_edition}negative {C:red}russia{} after every round'}
     },
     atlas = 'nickmgc',
     rarity = 'canadatro_deity',
@@ -3149,29 +3199,37 @@ SMODS.Joker{
 
     pos = {x=0, y= 0},
     soul_pos = { x = 0, y = 1 },
-    config = {extra = {retriggers = 7, multiplier = 7, dollars = 77}},
+    config = {extra = {retriggerstotal = 1, retriggersadd = 1}},
 
     loc_vars = function(self, info_queue, center)
-        return { vars = {center.ability.extra.multiplier, center.ability.extra.retriggers, center.ability.extra.dollars}}
+        return { vars = {center.ability.extra.retriggerstotal, center.ability.extra.retriggersadd}}
     end,
 
     calculate = function(self, card, context)
+        if context.end_of_round and context.cardarea == G.jokers then
+            if #G.jokers.cards <= G.jokers.config.card_limit then
+                local russia = create_card('Joker', G.Jokers, nil, nil, nil, nil, 'j_canadatro_russia')
+                russia:set_edition({ negative = true })
+                russia:add_to_deck()
+                G.jokers:emplace(russia)
+            end
+        end
+
+        russiacount = 0
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i].config.center.pools and G.jokers.cards[i].config.center.pools.Russia then
+                russiacount = russiacount + 1
+            end
+        end
+        card.ability.extra.retriggerstotal = russiacount + card.ability.extra.retriggersadd
+
         if context.repetition then
             if context.cardarea == G.play then
-                if context.other_card:get_id() == 7 then
-                    return {
-                        message = localize({
-                            type = "variable",
-                            key = "a_xmult_chips",
-                            vars = { number_format(card.ability.extra.multiplier) },
-                        }),
-                        Xmult_mod = card.ability.extra.multiplier,
-                        Xchip_mod = card.ability.extra.multiplier,
-                        dollars = card.ability.extra.dollars,
-                        repetitions = card.ability.extra.retriggers,
-                        card = card,
-                    }
-                end
+                return {
+                    message = localize("k_again_ex"),
+                    repetitions = card.ability.extra.retriggerstotal,
+                    card = card,
+                }
             end
         end
     end,

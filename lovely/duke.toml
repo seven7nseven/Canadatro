@@ -1,0 +1,32 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 52893407
+
+[[patches]]
+[patches.pattern] 
+target = "main.lua"
+pattern = "G.SCORING_COROUTINE = coroutine.create(oldplay)"
+position = "before"
+payload = '''
+local evilfuckedupplay = function()
+	for _, v in pairs(G.jokers.cards) do
+		local wawa = 0
+		if v.ability.name == "j_canadatro_duke" then
+			for i = 0, 100 * 20 do coroutine.yield() end
+		end
+	end
+	oldplay()
+end
+'''
+match_indent = true
+overwrite = false
+
+[[patches]]
+[patches.pattern] 
+target = "main.lua"
+pattern = "G.SCORING_COROUTINE = coroutine.create(oldplay)"
+position = "at"
+payload = "G.SCORING_COROUTINE = coroutine.create(evilfuckedupplay)"
+match_indent = true
+overwrite = true

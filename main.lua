@@ -8,7 +8,7 @@
 ------------MOD CODE -------------------------
 
 if not Canadatro then
-    Canadatro = {}
+	Canadatro = {}
 end
 
 G.C.CANADARED = HEX("ff7676")
@@ -27,10 +27,10 @@ Game.main_menu = function(change_context)
 				shader = "splash",
 				send = {
 					{ name = "time", ref_table = G.TIMERS, ref_value = "REAL_SHADER" },
-           			{name = 'vort_speed', val = G.C.vort_speed},
-            		{name = 'colour_1', ref_table = G.C, ref_value = 'CANADARED'},
-            		{name = 'colour_2', ref_table = G.C, ref_value = 'CANADAWHITE'},
-            		{name = 'mid_flash', ref_table = G.C, ref_value = 'mid_flash'},
+					{name = 'vort_speed', val = G.C.vort_speed},
+					{name = 'colour_1', ref_table = G.C, ref_value = 'CANADARED'},
+					{name = 'colour_2', ref_table = G.C, ref_value = 'CANADAWHITE'},
+					{name = 'mid_flash', ref_table = G.C, ref_value = 'mid_flash'},
 				},
 			},
 		})
@@ -42,7 +42,7 @@ Canadatro.path = mod_path
 Canadatro_config = SMODS.current_mod.config
 
 SMODS.current_mod.optional_features = {
-    retrigger_joker = true,
+	retrigger_joker = true,
 	post_trigger = true,
 }
 

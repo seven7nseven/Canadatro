@@ -1,16 +1,16 @@
 SMODS.Shader({ key = 'unpleasant', path = 'unpleasant.fs' })
 
-SMODS.Edition{
+SMODS.Edition({
 	key = "unpleasant",
 	order = 2,
-    loc_txt = {
-        name = "unpleasant",
-        label = "unpleasant",
-        text = {
-            "{X:mult,C:white} X#1#{} mult",
-            "{X:chips,C:white} X#2#{} chips",
-        }
-    },
+	loc_txt = {
+		name = "unpleasant",
+		label = "unpleasant",
+		text = {
+			"{X:mult,C:white} X#1#{} mult",
+			"{X:chips,C:white} X#2#{} chips",
+		}
+	},
 	weight = 13,
 	shader = "unpleasant",
 	in_shop = true,
@@ -40,14 +40,14 @@ SMODS.Edition{
 			card.config.trigger = nil
 		end
 	end,
-}
+})
 
 local miscitems = {
-    unpleasant_shader,
-    unpleasant,
+	unpleasant_shader,
+	unpleasant,
 }
 
 return {
-    name = "Misc.",
-    items = miscitems,
+	name = "Misc.",
+	items = miscitems,
 }

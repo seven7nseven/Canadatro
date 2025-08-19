@@ -503,51 +503,51 @@ SMODS.Joker({
 
 -- russia
 SMODS.Atlas{
-    key = 'russia',
-    path = 'russia.png',
-    px = 71,
-    py = 95,
+	key = 'russia',
+	path = 'russia.png',
+	px = 71,
+	py = 95,
 }
 
 SMODS.Joker{
-    key = 'russia',
-    loc_txt = {
-        name = 'russia',
-        text = {'does {C:dark_edition}absolutely fucking nothing {C:inactive}cause of course it does{}',
-                'also gives {C:green}#1#$ {C:inactive}cause of course it does{}'}
-    },
-    atlas = 'russia',
-    rarity = "canadatro_fuck",
-    cost = 2,
-    pools = {["Messedjokers"] = true, ["Country"] = true, ["Russia"] = true},
+	key = 'russia',
+	loc_txt = {
+		name = 'russia',
+		text = {'does {C:dark_edition}absolutely fucking nothing {C:inactive}cause of course it does{}',
+				'also gives {C:green}#1#$ {C:inactive}cause of course it does{}'}
+	},
+	atlas = 'russia',
+	rarity = "canadatro_fuck",
+	cost = 2,
+	pools = {["Messedjokers"] = true, ["Country"] = true, ["Russia"] = true},
 
-    unlocked = true,
-    discovered = true,
-    blueprint_compat = true,
-    eternal_compat = true,
-    perishable_compat = false,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = false,
 
-    pos = {x=0, y= 0},
-    config = {extra = {dollars = -1}},
+	pos = {x=0, y= 0},
+	config = {extra = {dollars = -1}},
 
-    loc_vars = function(self, info_queue, center)
-        return { vars = {center.ability.extra.dollars}}
-    end,
+	loc_vars = function(self, info_queue, center)
+		return { vars = {center.ability.extra.dollars}}
+	end,
 
-    calculate = function(self, card, context)
-        if context.joker_main then
-            return {
-                dollars = card.ability.extra.dollars,
-                }
-        end
-    end,
+	calculate = function(self, card, context)
+		if context.joker_main then
+			return {
+				dollars = card.ability.extra.dollars,
+				}
+		end
+	end,
 
-    check_for_unlock = function(self, args)
-        if args.type == 'test' then --not a real type, just a joke
-            unlock_card(self)
-        end
-        unlock_card(self) --unlocks the card if it isnt unlocked
-    end,
+	check_for_unlock = function(self, args)
+		if args.type == 'test' then --not a real type, just a joke
+			unlock_card(self)
+		end
+		unlock_card(self) --unlocks the card if it isnt unlocked
+	end,
 }
 
 -- france
@@ -2268,18 +2268,18 @@ SMODS.Atlas({
 
 
 SMODS.Joker({
-    key = 'donut',
-    loc_txt = {
-        name = 'donut',
-        text = {'{X:mult,C:white}x#1#{} mult',
-                'gain {X:mult,C:white}x#2#{} mult per {C:attention}country joker{} in possession',
-                'summon a {C:dark_edition}negative {C:attention}finland^3{} at the end of the round',
-                '{C:inactive}(currently {X:mult,C:white}x#3#{C:inactive} mult){}'}
-    },
-    atlas = 'donut',
-    rarity = 'canadatro_deity',
-    cost = 12839812598,
-    pools = {["Deity"] = true},
+	key = 'donut',
+	loc_txt = {
+		name = 'donut',
+		text = {'{X:mult,C:white}x#1#{} mult',
+				'gain {X:mult,C:white}x#2#{} mult per {C:attention}country joker{} in possession',
+				'summon a {C:dark_edition}negative {C:attention}finland^3{} at the end of the round',
+				'{C:inactive}(currently {X:mult,C:white}x#3#{C:inactive} mult){}'}
+	},
+	atlas = 'donut',
+	rarity = 'canadatro_deity',
+	cost = 12839812598,
+	pools = {["Deity"] = true},
 
 	unlocked = true,
 	discovered = true,
@@ -3098,9 +3098,15 @@ SMODS.Joker({
 	key = 'kalp',
 	loc_txt = {
 		name = 'kalp',
-		text = {'placeholder due to not having a finished effect decided upon',
-				'however as the creator of the legendary 6 am joke',
-				'he is an 6 am joker and will synergize with 6s in a way'}
+		text = {'when card played is a six:',
+				'{C:green}#1# in #2#{} to create a negative tarot card',
+				'{C:green}#1# in #3#{} to create a negative planet card',
+				'{C:green}#1# in #4#{} to create a negative spectral card',
+				'{X:mult,C:white}x#5#{} mult and chips for every 6am joker {C:inactive}(currently {X:mult,C:white}x#6#{C:inactive}){}',
+				'when card played is a 6 of {B:1,C:white}hearts{}:',
+				'turns the card foil and retriggers the card 2 times',
+				'when card played is a 6 of {B:2,C:white}spades{}:',
+				'turns the card holographic and gives ^1.5 mult'}
 	},
 	atlas = 'kalp',
 	rarity = 'canadatro_deity',
@@ -3115,13 +3121,103 @@ SMODS.Joker({
 
 	pos = {x=0, y= 0},
 	soul_pos = { x = 0, y = 1 },
-	config = {extra = {placeholder = "true"}},
+	config = {extra = {tarot_prob = 2, planet_prob = 4, spec_prob = 6, xmultBase = 1.3}},
 
-	--loc_vars = function(self, info_queue, center)
-	--end,
+	loc_vars = function(self, info_queue, center)
+		local sixamjorkers = 0
+		for _, v in pairs(G.jokers.cards) do
+			if v.config.center.pools and v.config.center.pools.SixAmJoker then
+				sixamjorkers = sixamjorkers + 1
+			end
+		end
+		-- print(center.ability.extra.mult)
+		return { vars = {
+				G.GAME.probabilities.normal, 
+				-- center.ability.extra.tarot_prob, 
+				2,
+				-- center.ability.extra.planet_prob, 
+				4,
+				-- center.ability.extra.spec_prob,
+				6,
+				"1.3",
+				number_format(1.3 * sixamjorkers),
+				colours = {
+					G.C.SUITS.Hearts,
+					G.C.SUITS.Spades,
+				}
+			}  }
+	end,
 
-	--calculate = function(self, card, context)
-	--end,
+	calculate = function(self, card, context)
+		local sixamjorkers = 0
+		for _, v in pairs(G.jokers.cards) do
+			if v.config.center.pools and v.config.center.pools.SixAmJoker then
+				sixamjorkers = sixamjorkers + 1
+			end
+		end
+
+		local function processSix(tablee)
+			local rand = pseudorandom('kalp')
+			local card = nil
+
+			if rand < (G.GAME.probabilities.normal / 6) then
+				card = create_card("Spectral", G.consumeables, nil, nil, true, true, nil, 'spe')
+			elseif rand < (G.GAME.probabilities.normal / 4) then
+				card = create_card("Planet", G.consumeables, nil, nil, true, true, nil, 'pl1')
+			elseif rand < (G.GAME.probabilities.normal / 2) then
+				card = create_card("Tarot", G.consumeables, nil, nil, true, true, nil, 'ar1')
+			end
+
+			if card then
+				card:set_edition({ negative = true })
+				card:add_to_deck()
+				G.consumeables:emplace(card)
+			end
+			if context.other_card:is_suit('Spades') then
+				tablee.Emult_mod = 1.5
+				tablee.Echip_mod = 1.5
+			else
+				tablee.Xmult_mod = (sixamjorkers * 1.3)
+				tablee.Xchip_mod = (sixamjorkers * 1.3)
+			end
+
+			return tablee
+		end
+
+		if context.repetition and context.cardarea == G.play and context.other_card:get_id() == 6 and context.other_card:is_suit('Hearts') then
+			context.other_card:set_edition({ foil = true })
+			return {
+				message = localize('k_again_ex'),
+				repetitions = 2,
+				card = card
+			}
+		end
+
+		if context.cardarea == G.play and context.individual and context.other_card:get_id() == 6 and context.other_card:is_suit('Spades') then
+			context.other_card:set_edition({ holo = true })
+			local wawa = processSix({
+				message = localize({
+					type = "variable",
+					key = "a_powmultchips",
+					vars = { number_format(1.5) },
+				}),
+				card = card
+			})
+			return wawa
+		end
+
+		if context.cardarea == G.play and context.individual and context.other_card:get_id() == 6 then
+			local wawa = processSix({
+				message = localize({
+					type = "variable",
+					key = "a_xmult_chips",
+					vars = { number_format(1.3) },
+				}),
+				card = card
+			})
+			return wawa
+		end
+	end,
 
 	check_for_unlock = function(self, args)
 		if args.type == 'test' then --not a real type, just a joke
@@ -3208,74 +3304,74 @@ SMODS.Joker({
 
 -- nickmgc
 SMODS.Atlas{
-    key = 'nickmgc',
-    path = 'nick.png',
-    px = 71,
-    py = 95,
+	key = 'nickmgc',
+	path = 'nick.png',
+	px = 71,
+	py = 95,
 }
 
 SMODS.Joker{
-    key = 'nickmgc',
-    loc_txt = {
-        name = 'nick',
-        text = {'retrigger every card {C:dark_edition}#1#{} times',
-                'increases by {C:attention}#2#{} per {C:red}russia{} in possession',
-                'summons a {C:dark_edition}negative {C:red}russia{} after every round'}
-    },
-    atlas = 'nickmgc',
-    rarity = 'canadatro_deity',
-    cost = 994884884773772838,
-    pools = {["Deity"] = true},
+	key = 'nickmgc',
+	loc_txt = {
+		name = 'nick',
+		text = {'retrigger every card {C:dark_edition}#1#{} times',
+				'increases by {C:attention}#2#{} per {C:red}russia{} in possession',
+				'summons a {C:dark_edition}negative {C:red}russia{} after every round'}
+	},
+	atlas = 'nickmgc',
+	rarity = 'canadatro_deity',
+	cost = 994884884773772838,
+	pools = {["Deity"] = true},
 
-    unlocked = true,
-    discovered = true,
-    blueprint_compat = false,
-    eternal_compat = false,
-    perishable_compat = false,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = false,
+	eternal_compat = false,
+	perishable_compat = false,
 
-    pos = {x=0, y= 0},
-    soul_pos = { x = 0, y = 1 },
-    config = {extra = {retriggerstotal = 1, retriggersadd = 1}},
+	pos = {x=0, y= 0},
+	soul_pos = { x = 0, y = 1 },
+	config = {extra = {retriggerstotal = 1, retriggersadd = 1}},
 
-    loc_vars = function(self, info_queue, center)
-        return { vars = {center.ability.extra.retriggerstotal, center.ability.extra.retriggersadd}}
-    end,
+	loc_vars = function(self, info_queue, center)
+		return { vars = {center.ability.extra.retriggerstotal, center.ability.extra.retriggersadd}}
+	end,
 
-    calculate = function(self, card, context)
-        if context.end_of_round and context.cardarea == G.jokers then
-            if #G.jokers.cards <= G.jokers.config.card_limit then
-                local russia = create_card('Joker', G.Jokers, nil, nil, nil, nil, 'j_canadatro_russia')
-                russia:set_edition({ negative = true })
-                russia:add_to_deck()
-                G.jokers:emplace(russia)
-            end
-        end
+	calculate = function(self, card, context)
+		if context.end_of_round and context.cardarea == G.jokers then
+			if #G.jokers.cards <= G.jokers.config.card_limit then
+				local russia = create_card('Joker', G.Jokers, nil, nil, nil, nil, 'j_canadatro_russia')
+				russia:set_edition({ negative = true })
+				russia:add_to_deck()
+				G.jokers:emplace(russia)
+			end
+		end
 
-        russiacount = 0
-        for i = 1, #G.jokers.cards do
-            if G.jokers.cards[i].config.center.pools and G.jokers.cards[i].config.center.pools.Russia then
-                russiacount = russiacount + 1
-            end
-        end
-        card.ability.extra.retriggerstotal = russiacount + card.ability.extra.retriggersadd
+		russiacount = 0
+		for i = 1, #G.jokers.cards do
+			if G.jokers.cards[i].config.center.pools and G.jokers.cards[i].config.center.pools.Russia then
+				russiacount = russiacount + 1
+			end
+		end
+		card.ability.extra.retriggerstotal = russiacount + card.ability.extra.retriggersadd
 
-        if context.repetition then
-            if context.cardarea == G.play then
-                return {
-                    message = localize("k_again_ex"),
-                    repetitions = card.ability.extra.retriggerstotal,
-                    card = card,
-                }
-            end
-        end
-    end,
+		if context.repetition then
+			if context.cardarea == G.play then
+				return {
+					message = localize("k_again_ex"),
+					repetitions = card.ability.extra.retriggerstotal,
+					card = card,
+				}
+			end
+		end
+	end,
 
-    check_for_unlock = function(self, args)
-        if args.type == 'test' then --not a real type, just a joke
-            unlock_card(self)
-        end
-        unlock_card(self) --unlocks the card if it isnt unlocked
-    end,
+	check_for_unlock = function(self, args)
+		if args.type == 'test' then --not a real type, just a joke
+			unlock_card(self)
+		end
+		unlock_card(self) --unlocks the card if it isnt unlocked
+	end,
 }
 
 function getJokerID(card)

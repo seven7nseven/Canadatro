@@ -151,7 +151,7 @@ SMODS.Consumable({
 				return true end }))
 			
 			G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
-				G.hand.highlighted[i].edition = "canadatro_unpleasant"
+				G.hand.highlighted[i]:set_edition({ canadatro_unpleasant = true })
 				return true end }))
 			
 			delay(0.5)
